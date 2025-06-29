@@ -147,11 +147,21 @@ st.line_chart(estado_hist.set_index("Fecha")["Lluvia (mm)"])
 # Exportar
 st.subheader("📤 Exportar histórico")
 col1, col2 = st.columns(2)
-with col1:
-    st.download_button("⬇▶︎ •၊၊||၊|။|||| | Descargar Excel", estado_hist.to_csv(index=False).encode(),
-                       file_name=f"historico_{estado_sel}.csv")
+with col1:    
+    st.download_button(
+    "▶︎ •၊၊||၊|။|| Descargar CSV del estado",
+    data=estado_hist.to_csv(index=False).encode("utf-8"),
+    file_name=f"historico_{estado_sel}.csv",
+    mime="text/csv"
+)
+    
 with col2:
     all_data = hist.sort_values(["Estado", "Fecha"])
-    st.download_button("⬇▶︎ •၊၊||၊|။|||| | Todos los estados", all_data.to_csv(index=False).encode(),
-                       file_name="lluvia_mexico_completo.csv")
+    
+    st.download_button(
+    "▶︎ •၊၊||၊|။|| Descargar CSV - Todos los estados",
+    data=all_data.to_csv(index=False).encode("utf-8"),
+    file_name="lluvia_mexico_completo.csv",
+    mime="text/csv"
+)
     
