@@ -125,7 +125,11 @@ fig = px.scatter_mapbox(
     hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False, "Color": False},
     size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
 )
-fig.update_layout(showlegend=False)
+fig.update_layout(
+    height=500,  # ajusta este valor para probar en móvil
+    margin=dict(l=10, r=10, t=10, b=10),
+    showlegend=False
+)
 st.plotly_chart(fig, use_container_width=True)
 
 # Pronóstico
