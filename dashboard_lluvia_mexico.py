@@ -127,10 +127,11 @@ fig = px.scatter_mapbox(
     color_continuous_scale="YlGnBu",
     hover_name="Texto Hover",
     hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False},
-    size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN,
-    showlegend=False
+    size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
 
 )
+fig.update_coloraxes(showscale=False)
+
 fig.update_layout(
     height=500,
     margin=dict(l=10, r=10, t=10, b=10),
