@@ -134,7 +134,7 @@ st.dataframe(pronostico, use_container_width=True)
 
 # Histórico
 st.subheader(f"ᓚ₍⑅^..^₎♡ Histórico de precipitación en {estado_sel}")
-hist = pd.read_csv(archivo)
+hist = pd.read_csv(archivo, on_bad_lines='skip')  # pandas >=1.3.0
 hist["Fecha"] = pd.to_datetime(hist["Fecha"])
 estado_hist = hist[hist["Estado"] == estado_sel].sort_values("Fecha")
 st.line_chart(estado_hist.set_index("Fecha")["Lluvia (mm)"])
