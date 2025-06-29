@@ -118,13 +118,14 @@ lat_sel = df[df["Estado"] == estado_sel]["Lat"].values[0]
 lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
 
 # Mapa
-#df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
+df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
 fig = px.scatter_mapbox(
     df, lat="Lat", lon="Lon", color="Color", size="Lluvia (mm)",
     hover_name="Texto Hover",
     hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False, "Color": False},
     size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
 )
+fig.update_layout(showlegend=False)
 st.plotly_chart(fig, use_container_width=True)
 
 # Pronóstico
