@@ -61,7 +61,10 @@ def obtener_lluvia_actual(lat, lon):
     url = "https://api.openweathermap.org/data/2.5/weather"
     params = {"lat": lat, "lon": lon, "appid": API_KEY, "units": "metric"}
     r = requests.get(url, params=params).json()
-    return r.get("rain", {}).get("1h", 0.0)
+    lluvia = r.get("rain", {}).get("1h")
+    if lluvia is None:
+        lluvia = 0.0
+    return round(lluvia, 2)
 
 def obtener_pronostico(lat, lon):
     url = "https://api.openweathermap.org/data/2.5/forecast"
@@ -112,9 +115,12 @@ lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
 
 # Mapa
 df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
-fig = px.scatter_mapbox(df, lat="Lat", lon="Lon", color="Color", size="Lluvia (mm)",
-                        hover_name="Estado", size_max=20, zoom=4,
-                        mapbox_style=MAPBOX_TOKEN)
+fig = px.scatter_mapbox(
+    df, lat="Lat", lon="Lon", color="Color", size="Lluvia (mm)",
+    hover_name="Estado",
+    hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False, "Color": False},
+    size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
+)
 st.plotly_chart(fig, use_container_width=True)
 
 # Pronóstico
