@@ -112,10 +112,6 @@ if os.path.exists(archivo):
 else:
     df.to_csv(archivo, index=False)
 
-# Estado seleccionado
-estado_sel = st.selectbox("Selecciona un estado:", df["Estado"])
-lat_sel = df[df["Estado"] == estado_sel]["Lat"].values[0]
-lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
 
 # Mapa
 df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
@@ -131,6 +127,12 @@ fig.update_layout(
     showlegend=False
 )
 st.plotly_chart(fig, use_container_width=True)
+
+# Estado seleccionado
+estado_sel = st.selectbox("ฅ^•ﻌ•^ฅ Selecciona un estado:", df["Estado"])
+lat_sel = df[df["Estado"] == estado_sel]["Lat"].values[0]
+lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
+
 
 # Pronóstico
 st.subheader(f"₍^. .^₎⟆ Pronóstico en {estado_sel} (3 días)")
