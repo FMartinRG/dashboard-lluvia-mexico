@@ -88,7 +88,15 @@ def obtener_pronostico(lat, lon):
 
 # ================ DASHBOARD =================
 st.set_page_config(page_title="Lluvia en México Tiempo Real y Pronóstico", layout="wide")
-st.title("Dashboard de Precipitación en México en Tiempo Real y Pronóstico")
+st.markdown(
+    """
+    <h3 style='text-align: center; color: #40E0D0; font-family: Georgia;'>
+        Dashboard de Lluvia en Tiempo Real
+    </h3>
+    """,
+    unsafe_allow_html=True
+)
+#st.title("Dashboard de Precipitación en México en Tiempo Real y Pronóstico")
 
 # Obtener datos actuales
 datos = []
@@ -112,26 +120,26 @@ if os.path.exists(archivo):
 else:
     df.to_csv(archivo, index=False)
 
-# Estado seleccionado
-estado_sel = st.selectbox("ฅ^•ﻌ•^ฅ Selecciona un estado:", df["Estado"])
-lat_sel = df[df["Estado"] == estado_sel]["Lat"].values[0]
-lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0] 
 
 # Mapa
-df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
 fig = px.scatter_mapbox(
-    df, lat="Lat", lon="Lon", color="Color", size="Lluvia (mm)",
+    df, lat="Lat", lon="Lon", color="Lluvia (mm)", size="Lluvia (mm)",
+    color_continuous_scale="YlGnBu",
     hover_name="Texto Hover",
-    hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False, "Color": False},
+    hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False},
     size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
 )
 fig.update_layout(
-    height=500,  # ajusta este valor para probar en móvil
+    height=500,
     margin=dict(l=10, r=10, t=10, b=10),
     showlegend=False
 )
 st.plotly_chart(fig, use_container_width=True)
 
+# Estado seleccionado (ahora después del mapa)
+estado_sel = st.selectbox("≽^•⩊•^≼ Selecciona un estado:", df["Estado"])
+lat_sel = df[df["Estado"] == estado_sel]["Lat"].values[0]
+lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
 
 
 
