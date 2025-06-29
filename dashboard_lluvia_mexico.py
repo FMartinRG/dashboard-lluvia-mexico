@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 import os
 
 # ==================== CONFIG ====================
-API_KEY = "9435f1c105a3b996061a77ef109272fa"  # Ingresa tu API Key válida
+API_KEY = "21473527536f18d480757d52653c548f"  # Ingresa tu API Key válida
 MAPBOX_TOKEN = "open-street-map"  # se úede sustituir con "carto-positron" 
 
 # ================= ESTADOS MÉXICO ======================
@@ -97,6 +97,10 @@ for e in estados:
     datos.append({**e, "Lluvia (mm)": lluvia})
 
 df = pd.DataFrame(datos)
+df["Texto Hover"] = df.apply(
+    lambda row: f"{row['Estado']}<br>Lluvia: {row['Lluvia (mm)']} mm" if row["Lluvia (mm)"] > 0 else f"{row['Estado']}<br>Sin lluvia",
+    axis=1
+)
 fecha = datetime.now().strftime("%Y-%m-%d %H:%M")
 df["Fecha"] = fecha
 
@@ -117,7 +121,7 @@ lon_sel = df[df["Estado"] == estado_sel]["Lon"].values[0]
 df["Color"] = df["Estado"].apply(lambda x: "lightcoral" if x == estado_sel else "aquamarine")
 fig = px.scatter_mapbox(
     df, lat="Lat", lon="Lon", color="Color", size="Lluvia (mm)",
-    hover_name="Estado",
+    hover_name="Texto Hover",
     hover_data={"Lluvia (mm)": True, "Lat": False, "Lon": False, "Color": False},
     size_max=20, zoom=4, mapbox_style=MAPBOX_TOKEN
 )
